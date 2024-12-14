@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Services</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="Intro">
+      <h1 class="lato-regular">Healthify</h1>
+      <p class="lato-bold">Find the Prevalence of Hospitals in Ontario Cities</p>
+    </div>
+    <div class="search-container">
+      <p>Enter a city name to search for its hospitals:</p>
+      <input type="text" id="searchInput" placeholder="Enter city name">
+      <button type="button" onclick="searchHospital()">Search</button>
+    </div>
+
+    <div id="resultsContainer"></div>
+
+    <script>
+      const Ontario = {
+        "Barrie": {
+          hospitals: ["Royal Victoria Regional Health Centre"],
+          population: 141000
+        },
+        "Brampton": {
+          hospitals: ["Brampton Civic Hospital", "Peel Memorial Centre for Integrated Health and Wellness"],
+          population: 593638
+        },
+        "Brantford": {
+          hospitals: ["Brantford General Hospital"],
+          population: 101000
+        },
+        "Burlington": {
+          hospitals: ["Joseph Brant Hospital"],
+          population: 183000
+        },
+        "Cambridge": {
+          hospitals: ["Cambridge Memorial Hospital"],
+          population: 129000
+        },
+        "Guelph": {
+          hospitals: ["Guelph General Hospital"],
+          population: 131794
+        },
+        "Hamilton": {
+          hospitals: ["St. Joseph's Healthcare Hamilton", "Hamilton Health Sciences", "McMaster Children's Hospital", "Juravinski Hospital and Cancer Centre"],
+          population: 536917
+        },
+        "Kingston": {
+          hospitals: ["Kingston General Hospital", "Hotel Dieu Hospital"],
+          population: 123000
+        },
+        "Kitchener": {
+          hospitals: ["Grand River Hospital", "St. Mary's General Hospital"],
+          population: 256000
+        },
+        "London": {
+          hospitals: ["London Health Sciences Centre", "St. Joseph's Health Care", "Children's Hospital London Health Sciences Centre"],
+          population: 383822
+        },
+        "Markham": {
+          hospitals: ["Markham Stouffville Hospital"],
+          population: 328000
+        },
+        "Mississauga": {
+          hospitals: ["Trillium Health Partners - Mississauga Hospital", "Credit Valley Hospital"],
+          population: 721599
+        },
+        "Niagara Falls": {
+          hospitals: ["Niagara Health System - Niagara Falls Site"],
+          population: 88333
+        },
+        "Ottawa": {
+          hospitals: ["The Ottawa Hospital", "Montfort Hospital", "Cheo - Children's Hospital of Eastern Ontario"],
+          population: 934243
+        },
+        "Peterborough": {
+          hospitals: ["Peterborough Regional Health Centre"],
+          population: 81724
+        },
+        "Richmond Hill": {
+          hospitals: ["Mackenzie Richmond Hill Hospital"],
+          population: 195022
+        },
+        "St. Catharines": {
+          hospitals: ["St. Catharines General Hospital", "Niagara Health - St. Catharines Site"],
+          population: 133113
+        },
+        "Sudbury": {
+          hospitals: ["Health Sciences North"],
+          population: 164000
+        },
+        "Thunder Bay": {
+          hospitals: ["Thunder Bay Regional Health Sciences Centre"],
+          population: 110000
+        },
+        "Toronto": {
+          hospitals: ["Toronto General Hospital", "St. Michael's Hospital", "Sunnybrook Health Sciences Centre", "Mount Sinai Hospital", "Women's College Hospital", "The Hospital for Sick Children"],
+          population: 2930000
+        },
+        "Vaughan": {
+          hospitals: ["Cortellucci Vaughan Hospital"],
+          population: 306233
+        },
+        "Waterloo": {
+          hospitals: ["Grand River Hospital"],
+          population: 104000
+        },
+        "Windsor": {
+          hospitals: ["Windsor Regional Hospital"],
+          population: 330000
+        },
+        "Oakville": {
+          hospitals: ["Halton Healthcare"],
+          population: 213759
+        }
+      };
+
+      function searchHospital() {
+        let search = document.getElementById("searchInput").value;
+        search = search.toLowerCase();
+
+        let results = [];
+
+        for (let city in Ontario) {
+          if (city.toLowerCase().includes(search)) {
+            let population = Ontario[city].population;
+            let hospitals = Ontario[city].hospitals;
+            let hospitalCount = hospitals.length;
+
+            let ratio = population / hospitalCount;
+
+            let rating = "bad";
+            let barColor = "red";
+            let ratingText = "Bad";
+
+            if (ratio <= 130000) {
+              rating = "great";
+              barColor = "green";
+              ratingText = "Great";
+            } else if (ratio <= 180000) {
+              rating = "good";
+              barColor = "yellow";
+              ratingText = "Good";
+            } else if (ratio <= 230000) {
+              rating = "okay";
+              barColor = "orange";
+              ratingText = "Okay";
+            }
+
+            results.push({ city, hospitals, population, rating, barColor, ratingText });
+          }
+        }
+
+        let resultsContainer = document.getElementById("resultsContainer");
+        resultsContainer.innerHTML = "";
+        if (results.length > 0) {
+          results.forEach(result => {
+            let resultElement = document.createElement("div");
+            resultElement.style.padding = "20px";
+            resultElement.style.margin = "20px 0";
+            resultElement.style.border = "1px solid #ccc";
+            resultElement.style.borderRadius = "5px";
+            resultElement.style.backgroundColor = "#ffffff";
+
+            resultElement.innerHTML = `
+              <p>${result.city} (Hospitals: ${result.hospitals.join(", ")}) (City population: ${result.population})</p>
+              <p>Rating: <span style="font-weight: bold; color: ${result.barColor};">${result.ratingText}</span></p>
+              <div style="height: 10px; background-color: ${result.barColor}; width: 80%;"></div>
+            `;
+            resultsContainer.appendChild(resultElement);
+          });
+        } else {
+          resultsContainer.innerHTML = "<p>No results found</p>";
+        }
+      }
+    </script>
+
+    <div>
+      <h2>The cities' ratings are their population to hospitals ratio.</h2>
+      <p> </p>
+      <h2>To help fund the building of more hospitals, please contact us at our Contact Page</h2>
+    </div>
+
+    <style>
+      body {
+        font-family: 'Lato', sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      #Intro {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        font-size: 50px;
+        color: #3b3b3b;
+        margin: 0;
+      }
+
+      p {
+        font-size: 18px;
+        color: #666;
+        margin: 10px 0;
+      }
+
+      .search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      #searchInput {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        width: 250px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #ff6a00;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #e65c00;
+      }
+
+      .results-container {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: white;
+        width: 80%;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .results-container p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333333;
+      }
+
+      .results-container p:nth-child(odd) {
+        background-color: #ffffff;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .results-container p:nth-child(even) {
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .results-container p.no-results {
+        color: red;
+        font-weight: bold;
+      }
+      h2 {
+        font-family: 'Lato', sans-serif;
+        margin: 25px;
+        text-align: center;
+      }
+    </style>
+
+    <a href="Hack The Ridge1.html"> Return to home </a>
+  </body>
+</html>

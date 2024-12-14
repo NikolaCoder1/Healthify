@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Condition Treatment Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            width: 500px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 30px;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 30px;
+            background-color: #fff;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result span {
+            color: #4CAF50;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Medical Condition Treatment Guide</h1>
+
+    <label for="search">Search for a Medical Condition:</label>
+    <input type="text" id="search" placeholder="Start typing a condition...">
+
+    <label for="condition">Select a Medical Condition:</label>
+    <select id="condition">
+        <option value="">--Select a condition--</option>
+        <option value="heart attack">Heart Attack</option>
+        <option value="stroke">Stroke</option>
+        <option value="fever">Fever</option>
+        <option value="broken bone">Broken Bone</option>
+        <option value="burn">Burn</option>
+        <option value="diabetes">Diabetes</option>
+        <option value="asthma">Asthma</option>
+        <option value="severe bleeding">Severe Bleeding</option>
+        <option value="cough">Cough</option>
+        <option value="allergic reaction">Allergic Reaction</option>
+        <option value="pneumonia">Pneumonia</option>
+        <option value="cancer">Cancer</option>
+        <option value="chronic pain">Chronic Pain</option>
+        <option value="appendicitis">Appendicitis</option>
+        <option value="hypertension">Hypertension</option>
+        <option value="sepsis">Sepsis</option>
+        <option value="migraine">Migraine</option>
+        <option value="hypoglycemia">Hypoglycemia</option>
+        <option value="dengue">Dengue</option>
+        <option value="rabies">Rabies</option>
+        <option value="arthritis">Arthritis</option>
+        <option value="tuberculosis">Tuberculosis</option>
+        <option value="gallstones">Gallstones</option>
+        <option value="kidney stones">Kidney Stones</option>
+        <option value="chickenpox">Chickenpox</option>
+        <option value="influenza">Influenza</option>
+        <option value="shingles">Shingles</option>
+        <option value="eczema">Eczema</option>
+        <option value="bronchitis">Bronchitis</option>
+        <option value="gout">Gout</option>
+        <option value="liver disease">Liver Disease</option>
+        <option value="depression">Depression</option>
+        <option value="anxiety">Anxiety</option>
+        <option value="insomnia">Insomnia</option>
+        <option value="bipolar disorder">Bipolar Disorder</option>
+        <option value="schizophrenia">Schizophrenia</option>
+        <!-- Add more options as needed -->
+    </select>
+
+    <button onclick="getTreatment()">Get Treatment Location</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<a href="Hack The Ridge1.html">
+    <button class="btn">Back to Home Page</button>
+</a>
+
+
+
+<script>
+    // Get the input and select elements
+    const searchInput = document.getElementById('search');
+    const conditionSelect = document.getElementById('condition');
+
+    // Listen for changes in the search input and filter the list
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const options = conditionSelect.options;
+
+        for (let i = 1; i < options.length; i++) {
+            const condition = options[i].text.toLowerCase();
+            if (condition.indexOf(searchTerm) > -1) {
+                options[i].style.display = 'block'; // Show matching options
+            } else {
+                options[i].style.display = 'none'; // Hide non-matching options
+            }
+        }
+    });
+
+    function getTreatment() {
+        const condition = conditionSelect.value;
+        const result = document.getElementById('result');
+
+        // Determine where to go based on the condition
+        let treatmentLocation = "";
+
+        switch (condition.toLowerCase()) {
+            case "heart attack":
+                treatmentLocation = "Go to the Emergency Room immediately or call an ambulance.";
+                break;
+            case "stroke":
+                treatmentLocation = "Go to the Emergency Room immediately or call an ambulance.";
+                break;
+            case "fever":
+                treatmentLocation = "Visit your Family Doctor if fever persists for more than 2 days.";
+                break;
+            case "broken bone":
+                treatmentLocation = "Visit your Family Doctor or an Urgent Care Center.";
+                break;
+            case "burn":
+                treatmentLocation = "For minor burns, visit a Family Doctor. For severe burns, go to the Emergency Room or call an ambulance.";
+                break;
+            case "diabetes":
+                treatmentLocation = "Visit your Family Doctor for ongoing management.";
+                break;
+            case "asthma":
+                treatmentLocation = "If severe, go to the Emergency Room. Otherwise, visit your Family Doctor.";
+                break;
+            case "severe bleeding":
+                treatmentLocation = "Go to the Emergency Room or call an ambulance immediately.";
+                break;
+            case "cough":
+                treatmentLocation = "Visit your Family Doctor if the cough persists for more than 2 weeks.";
+                break;
+            case "allergic reaction":
+                treatmentLocation = "For mild reactions, visit your Family Doctor. For severe reactions, go to the Emergency Room or call an ambulance.";
+                break;
+            default:
+                treatmentLocation = "Please select a valid condition.";
+        }
+
+        // Display the result
+        result.innerHTML = `<span>${treatmentLocation}</span>`;
+    }
+</script>
+
+</body>
+</html>

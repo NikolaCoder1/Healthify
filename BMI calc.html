@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        /* Global reset for margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and background */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Main container */
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            width: 350px; /* Reduced width */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 24px; /* Reduced font size */
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Toggle buttons for unit selection */
+        .unit-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .unit-toggle button {
+            padding: 10px 20px; /* Reduced padding */
+            font-size: 14px; /* Reduced font size */
+            margin: 0 8px; /* Reduced margin */
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .unit-toggle button.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .unit-toggle button:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 15px; /* Reduced margin */
+        }
+
+        .form-group label {
+            font-size: 14px; /* Reduced font size */
+            color: #555;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px; /* Reduced padding */
+            font-size: 14px; /* Reduced font size */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(0, 128, 0, 0.3);
+        }
+
+        /* Calculate button */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px; /* Reduced font size */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 15px; /* Reduced margin */
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* BMI result box */
+        .result-box {
+            background-color: #e1f7d5;
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            padding: 15px; /* Reduced padding */
+            margin-top: 20px;
+            font-size: 20px; /* Reduced font size */
+            color: #4CAF50;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Back to homepage button */
+        .return-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px; /* Reduced padding */
+            border: none;
+            border-radius: 8px;
+            font-size: 16px; /* Reduced font size */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>BMI Calculator</h1>
+
+    <div class="unit-toggle">
+        <button id="metric-btn" class="active">Metric</button>
+        <button id="imperial-btn">Imperial</button>
+    </div>
+
+    <div id="metric-form">
+        <div class="form-group">
+            <label for="metric-weight">Weight (kg):</label>
+            <input type="number" id="metric-weight" placeholder="Enter weight in kg" required>
+        </div>
+        <div class="form-group">
+            <label for="metric-height">Height (cm):</label>
+            <input type="number" id="metric-height" placeholder="Enter height in cm" required>
+        </div>
+    </div>
+
+    <div id="imperial-form" style="display: none;">
+        <div class="form-group">
+            <label for="imperial-feet">Height (feet):</label>
+            <input type="number" id="imperial-feet" placeholder="Feet" required>
+        </div>
+        <div class="form-group">
+            <label for="imperial-inches">Height (inches):</label>
+            <input type="number" id="imperial-inches" placeholder="Inches" required>
+        </div>
+        <div class="form-group">
+            <label for="imperial-weight">Weight (lbs):</label>
+            <input type="number" id="imperial-weight" placeholder="Enter weight in lbs" required>
+        </div>
+    </div>
+
+    <button class="btn" onclick="calculateBMI()">Calculate BMI</button>
+
+    <div class="result-box" id="result" style="display: none;"></div>
+</div>
+
+<script>
+    let currentUnit = 'metric';
+
+    // Toggle between metric and imperial forms
+    document.getElementById('metric-btn').addEventListener('click', function() {
+        currentUnit = 'metric';
+        document.getElementById('metric-form').style.display = 'block';
+        document.getElementById('imperial-form').style.display = 'none';
+        document.getElementById('metric-btn').classList.add('active');
+        document.getElementById('imperial-btn').classList.remove('active');
+    });
+
+    document.getElementById('imperial-btn').addEventListener('click', function() {
+        currentUnit = 'imperial';
+        document.getElementById('imperial-form').style.display = 'block';
+        document.getElementById('metric-form').style.display = 'none';
+        document.getElementById('imperial-btn').classList.add('active');
+        document.getElementById('metric-btn').classList.remove('active');
+    });
+
+    function calculateBMI() {
+        let weight, height, bmi;
+
+        if (currentUnit === 'metric') {
+            // Metric system: weight in kg, height in cm
+            weight = parseFloat(document.getElementById('metric-weight').value);
+            height = parseFloat(document.getElementById('metric-height').value) / 100; // Convert cm to meters
+
+            // Validate input
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                document.getElementById('result').style.display = 'none';
+                alert('Please enter valid values.');
+                return;
+            }
+
+            // BMI formula for metric: BMI = weight / (height * height)
+            bmi = weight / (height * height);
+
+        } else {
+            // Imperial system: weight in lbs, height in feet and inches
+            weight = parseFloat(document.getElementById('imperial-weight').value);
+            let feet = parseFloat(document.getElementById('imperial-feet').value);
+            let inches = parseFloat(document.getElementById('imperial-inches').value);
+
+            // Convert height to inches first
+            let totalHeightInches = (feet * 12) + inches;
+
+            // Validate input
+            if (isNaN(weight) || isNaN(feet) || isNaN(inches) || weight <= 0 || feet < 0 || inches < 0) {
+                document.getElementById('result').style.display = 'none';
+                alert('Please enter valid values.');
+                return;
+            }
+
+            // BMI formula for imperial: BMI = (weight in lbs) / (height in inches)^2 * 703
+            bmi = (weight / (totalHeightInches * totalHeightInches)) * 703;
+        }
+
+        // Display the BMI result, rounded to two decimal places
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result').innerHTML = `Your BMI is: ${bmi.toFixed(2)}`;
+    }
+
+</script>
+
+<a href="Hack The Ridge1.html">
+    <button class="return-btn">Back to Homepage</button>
+</a>
+
+</body>
+</html>

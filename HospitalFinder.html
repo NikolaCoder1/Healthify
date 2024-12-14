@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Nearest Hospital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            width: 500px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Find Nearest Hospital in Ontario</h1>
+    <label for="city">Enter Your City:</label>
+    <input type="text" id="city" placeholder="Type your city name">
+    
+    <button onclick="findHospital()">Find Nearest Hospital</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 Hospital Finder. All Rights Reserved.</p>
+</div>
+
+<script>
+    // Sample hospital data (city and nearest hospital)
+    const hospitals = {
+        "Toronto": {
+            name: "Toronto General Hospital",
+            address: "200 Elizabeth St, Toronto, ON M5G 2C4"
+        },
+        "Ottawa": {
+            name: "The Ottawa Hospital",
+            address: "1053 Carling Ave, Ottawa, ON K1Y 4E9"
+        },
+        "Mississauga": {
+            name: "Trillium Health Partners - Credit Valley Hospital",
+            address: "2200 Eglinton Ave W, Mississauga, ON L5M 2N1"
+        },
+        "Brampton": {
+            name: "Brampton Civic Hospital",
+            address: "2100 Bovaird Dr E, Brampton, ON L6R 3J7"
+        },
+        "London": {
+            name: "London Health Sciences Centre",
+            address: "800 Commissioners Rd E, London, ON N6A 5W9"
+        },
+        "Hamilton": {
+            name: "St. Joseph's Healthcare Hamilton",
+            address: "50 Charlton Ave E, Hamilton, ON L8N 4A6"
+        },
+        "Kingston": {
+            name: "Kingston Health Sciences Centre",
+            address: "76 Stuart St, Kingston, ON K7L 2V7"
+        },
+        // Add more cities and hospitals here as needed
+    };
+
+    // Function to find the nearest hospital based on city input
+    function findHospital() {
+        const city = document.getElementById("city").value.trim();
+        const resultDiv = document.getElementById("result");
+
+        if (city === "") {
+            resultDiv.innerHTML = "Please enter a city name.";
+            return;
+        }
+
+        // Standardize city input to capitalize first letter of each word
+        const formattedCity = city.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+
+        // Check if the city exists in the data
+        if (hospitals[formattedCity]) {
+            const hospital = hospitals[formattedCity];
+            resultDiv.innerHTML = `The nearest hospital to ${formattedCity} is:<br><strong>${hospital.name}</strong><br>Address: ${hospital.address}`;
+        } else {
+            resultDiv.innerHTML = `Sorry, we couldn't find a hospital for ${formattedCity}. Please try another city.`;
+        }
+    }
+</script>
+
+<br>
+<br>
+<a href="Hack The Ridge1.html">
+    <button class="btn">Back to Home Page</button>
+</a>
+
+</body>
+</html>
